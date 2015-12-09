@@ -31,16 +31,16 @@ def number?(input)
   integer?(input) || float?(input)
 end
 
-def monthly_interest_rate
-  @rate /= 12
+def monthly_interest_rate(r)
+  r /= 12
 end
 
-def monthly_duration
-  @loan_time *= 12
+def monthly_duration(ml)
+  ml *= 12
 end
 
-def calculate_payment
-  @payment = @loan_amount * ((@rate * (1 + @rate)**@loan_time) / ((1 + @rate)**@loan_time - 1))
+def calculate_payment(la, r, ml)
+  payment = la * ((r * (1 + r)**ml) / ((1 + r)**ml - 1))
 end
 
 prompt(MESSAGES['intro'])
@@ -58,50 +58,48 @@ loop do
 end
 loop do
   prompt(MESSAGES['loan_remaining'])
-  @loan_amount = gets.chomp.to_f
+  loan_amount = gets.chomp.to_f
 
   loop do
-    if number?(@loan_amount)
+    if number?(loan_amount)
       break
     else
       prompt(MESSAGES['loan_remaining_error'])
-      @loan_amount = gets.chomp
+      loan_amount = gets.chomp
     end
   end
 
   prompt(MESSAGES['apr'])
-  @rate = gets.chomp.to_f
+  rate = gets.chomp.to_f
 
   loop do
-    if number?(@rate)
-      @rate /= 100
+    if number?(rate)
+      rate /= 100
       break
     else
       prompt(MESSAGES['rate_error'])
-      @rate = gets.chomp
+      rate = gets.chomp
     end
   end
 
   prompt(MESSAGES['loan_duration'])
-  @loan_time = gets.chomp.to_f
+  loan_time = gets.chomp.to_f
 
   loop do
-    if number?(@loan_time)
+    if number?(loan_time)
       break
     else
       prompt(MESSAGES['loan_duration_error'])
-      @loan_time = gets.chomp
+      loan_time = gets.chomp
     end
   end
 
   prompt(MESSAGES['calculating'])
   sleep(2)
 
-  monthly_interest_rate
-  monthly_duration
-  calculate_payment
-
-  prompt(MESSAGES['total'], format('%20.2f', @payment))
+  rate = monthly_interest_rate(rate)
+  loan_time = monthly_duration(loan_time)
+  prompt(MESSAGES['total'], format('%20.2f', calculate_payment(loan_amount, rate, loan_time)))
   sleep(1)
   prompt(MESSAGES['again'])
   run_again = gets.chomp
