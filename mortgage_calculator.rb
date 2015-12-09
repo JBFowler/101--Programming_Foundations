@@ -6,18 +6,16 @@ require 'pry'
 MESSAGES = YAML.load_file('mortgage_calculator_messages.yml')
 
 def prompt(msg, arg='')
-  begin
-    if arg.empty?
-      puts "=> #{msg}"
-    else
-      puts "=> #{msg}" + "#{arg}."
-    end
-  rescue
-    if arg.nil?
-      puts "=> #{msg}"
-    else
-      puts "=> #{msg}" + "#{arg}."
-    end
+  if arg.empty?
+    puts "=> #{msg}"
+  else
+    puts "=> #{msg}" + "#{arg}."
+  end
+rescue
+  if arg.nil?
+    puts "=> #{msg}"
+  else
+    puts "=> #{msg}" + "#{arg}."
   end
 end
 
@@ -34,12 +32,11 @@ def number?(input)
 end
 
 def monthly_interest_rate
-  @rate
-  @rate = @rate / 12
+  @rate /= 12
 end
 
 def monthly_duration
-  @loan_time = @loan_time * 12
+  @loan_time *= 12
 end
 
 def calculate_payment
@@ -65,7 +62,6 @@ loop do
 
   loop do
     if number?(@loan_amount)
-      @loan_amount
       break
     else
       prompt(MESSAGES['loan_remaining_error'])
@@ -78,7 +74,7 @@ loop do
 
   loop do
     if number?(@rate)
-      @rate = @rate / 100
+      @rate /= 100
       break
     else
       prompt(MESSAGES['rate_error'])
@@ -91,7 +87,6 @@ loop do
 
   loop do
     if number?(@loan_time)
-      @loan_time
       break
     else
       prompt(MESSAGES['loan_duration_error'])
