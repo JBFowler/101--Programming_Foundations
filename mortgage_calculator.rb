@@ -32,15 +32,15 @@ def number?(input)
 end
 
 def monthly_interest_rate(r)
-  r /= 12
+  r / 12
 end
 
 def monthly_duration(ml)
-  ml *= 12
+  ml * 12
 end
 
 def calculate_payment(la, r, ml)
-  payment = la * ((r * (1 + r)**ml) / ((1 + r)**ml - 1))
+  la * ((r * (1 + r)**ml) / ((1 + r)**ml - 1))
 end
 
 prompt(MESSAGES['intro'])
