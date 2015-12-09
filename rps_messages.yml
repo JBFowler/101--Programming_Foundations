@@ -1,0 +1,18 @@
+# Messages for the rock paper scissors program
+
+welcome: "Welcome to Paper Rock Scissors!  Please enter your name:"
+name_error: "Please enter a valid name:"
+welcome_player: "Glad to have you with us "
+choose_weapon: "Choose one: "
+invalid_weapon: "Please make a valid choice:"
+player_choice: "You chose "
+npc_choice: "The computer chose "
+tie: "You and the computer tied!"
+player_paper: "Paper crumbles rock, you win!"
+npc_rock: "Rock smashes scissors, the computer wins..."
+player_scissors: "Scissors cut through paper, you win!"
+npc_paper: "Paper crumbles rock, the computer wins..."
+player_rock: "Rock smashes scissors, you win!"
+npc_scissors: "Scissors cut through paper, computer wins..."
+play_again: "Would you like to play again? (y or n)"
+thank_you: "Thanks for playing!"
