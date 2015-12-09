@@ -1,7 +1,13 @@
 require 'yaml'
 MESSAGES = YAML.load_file('calculator_messages.yml')
+LANGUAGE = 'en'
 
-def prompt(message)
+def messages(message, lang='en')
+  MESSAGES[lang][message]
+end
+
+def prompt(key)
+  message = messages(key, LANGUAGE)
   puts "=> #{message}"
 end
 
@@ -30,20 +36,21 @@ def operation_to_message(op)
   end
 end
 
-prompt(MESSAGES['welcome'])
+prompt('welcome')
 
 name = ''
 
 loop do
   name = gets.chomp
   if name.empty?
-    prompt(MESSAGES['valid_name'])
+    prompt('valid_name')
   else
     break
   end
 end
 
-prompt(MESSAGES['welcome_player'] + " #{name}.")
+puts "Welcome #{name}!"
+
 
 loop do
   num1 = ''
@@ -51,24 +58,24 @@ loop do
   operator = ''
 
   loop do
-    prompt(MESSAGES['first_number'])
+    prompt('first_number')
     num1 = gets.chomp
 
     if integer?(num1)
       break
     else
-      prompt(MESSAGES['valid_number'])
+      prompt('valid_number')
     end
   end
 
   loop do
-    prompt(MESSAGES['second_number'])
+    prompt('second_number')
     num2 = gets.chomp
 
     if integer?(num2)
       break
     else
-      prompt(MESSAGES['valid_number'])
+      prompt('valid_number')
     end
   end
 
@@ -80,7 +87,7 @@ loop do
     4) divide
   MSG
 
-  prompt(operator_prompt)
+  puts "#{operator_prompt}"
 
   loop do
     operator = gets.chomp
@@ -88,26 +95,26 @@ loop do
     if %w(1 2 3 4).include?(operator)
       break
     else
-      prompt(MESSAGES['calculation'])
+      prompt('calculation')
     end
   end
 
-  prompt("#{operation_to_message(operator)}" + MESSAGES['selection'])
+  puts "#{operation_to_message(operator)} the two numbers..."
 
   sleep(1)
 
   case operator
-  when "1"
-    prompt("#{num1.to_i + num2.to_i}")
-  when "2"
-    prompt("#{num1.to_i - num2.to_i}")
-  when "3"
-    prompt("#{num1.to_i * num2.to_i}")
-  when "4"
-    prompt("#{num1.to_f / num2.to_f}")
+  when '1'
+    puts "#{num1.to_i + num2.to_i}"
+  when '2'
+    puts "#{num1.to_i - num2.to_i}"
+  when '3'
+    puts "#{num1.to_i * num2.to_i}"
+  when '4'
+    puts "#{num1.to_f / num2.to_f}"
   end
 
-  prompt(MESSAGES['run_again'])
+  prompt('run_again')
   answer = gets.chomp
 
   break unless answer.downcase.start_with?('y')
