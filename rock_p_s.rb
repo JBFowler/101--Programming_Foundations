@@ -4,29 +4,37 @@ require 'yaml'
 MESSAGES = YAML.load_file('rps_messages.yml')
 WEAPONS = %w(rock paper scissors)
 
-def prompt(msg, arg='')
+def prompt(msg, arg = '')
   if arg.empty?
     puts "=> #{msg}"
   else
-    puts "=> #{msg}" + "#{arg}."
+    puts "=> #{msg}" + "#{arg}"
+  end
+end
+
+def win?(first, second)
+  (first == 'rock' && second == 'scissors') ||
+    (first == 'paper' && second == 'rock') ||
+    (first == 'scissors' && second == 'paper')
+end
+
+def winning_weapon?(wep, winner)
+  if wep == 'rock'
+    prompt(MESSAGES['rock'], MESSAGES[winner])
+  elsif wep == 'paper'
+    prompt(MESSAGES['paper'], MESSAGES[winner])
+  else
+    prompt(MESSAGES['scissors'], MESSAGES[winner])
   end
 end
 
 def display_results(player, npc)
-  if npc == player
+  if win?(player, npc)
+    winning_weapon?(player, 'player_wins')
+  elsif win?(npc, player)
+    winning_weapon?(npc, 'computer_wins')
+  else
     prompt(MESSAGES['tie'])
-  elsif npc == 'rock' && player == 'paper'
-    prompt(MESSAGES['player_paper'])
-  elsif npc == 'rock' && player == 'scissors'
-    prompt(MESSAGES['npc_rock'])
-  elsif npc == 'paper' && player == 'scissors'
-    prompt(MESSAGES['player_scissors'])
-  elsif npc == 'paper' && player == 'rock'
-    prompt(MESSAGES['npc_paper'])
-  elsif npc == 'scissors' && player == 'rock'
-    prompt(MESSAGES['player_rock'])
-  elsif npc == 'scissors' && player == 'paper'
-    prompt(MESSAGES['npc_scissors'])
   end
 end
 

@@ -5,26 +5,20 @@ require 'yaml'
 require 'pry'
 MESSAGES = YAML.load_file('mortgage_calculator_messages.yml')
 
-def prompt(msg, arg='')
-  if arg.empty?
-    puts "=> #{msg}"
-  else
-    puts "=> #{msg}" + "#{arg}."
-  end
-rescue
-  if arg.nil?
+def prompt(msg, arg = '')
+  if arg.to_s.empty?
     puts "=> #{msg}"
   else
     puts "=> #{msg}" + "#{arg}."
   end
 end
 
-def integer?(num)
-  Integer(num) rescue false || num < 0
+def integer?(str)
+  (str.to_i.to_s == str) || (str.to_i > 0)
 end
 
-def float?(num)
-  Float(num) rescue false || num < 0
+def float?(str)
+  (str.to_f.to_s == str) || (str.to_f > 0)
 end
 
 def number?(input)
@@ -65,7 +59,7 @@ loop do
       break
     else
       prompt(MESSAGES['loan_remaining_error'])
-      loan_amount = gets.chomp
+      loan_amount = gets.chomp.to_f
     end
   end
 
@@ -78,7 +72,7 @@ loop do
       break
     else
       prompt(MESSAGES['rate_error'])
-      rate = gets.chomp
+      rate = gets.chomp.to_f
     end
   end
 
@@ -90,7 +84,7 @@ loop do
       break
     else
       prompt(MESSAGES['loan_duration_error'])
-      loan_time = gets.chomp
+      loan_time = gets.chomp.to_f
     end
   end
 
