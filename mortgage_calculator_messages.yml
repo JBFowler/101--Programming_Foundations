@@ -1,0 +1,14 @@
+# Messages used for the mortgage calculator
+
+intro: 'Welcome to the mortgage calculator.  What is your name?'
+name_error: 'Please enter a valid name.'
+welcome: 'Welcome '
+loan_remaining: 'Please enter the loan amount for your mortgage:'
+loan_remaining_error: 'Please enter a valid loan amount:'
+apr: 'Please enter the Annual Percentage Rate(APR) as a whole number(i.e. 7% would be entered as 7):'
+rate_error: 'Please enter a valid APR:'
+loan_duration: 'Please enter the number of years left on the loan as a whole number:'
+loan_duration_error: 'Please enter a valid number of years:'
+calculating: 'Calculating your monthly payment amount:'
+total: 'Your total monthly payment is: '
+again: 'Would you like to calculate another monthly payment? (Y / N)'
