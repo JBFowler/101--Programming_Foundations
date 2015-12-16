@@ -1,4 +1,4 @@
-# Answers to Medium 2 exercises
+# Answers to Medium 3 exercises
 
 def prompt(msg)
   puts "=> #{msg}"
