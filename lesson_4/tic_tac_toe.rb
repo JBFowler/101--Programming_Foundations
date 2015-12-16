@@ -67,12 +67,27 @@ def player_picks!(brd)
   brd[square.to_i] = PLAYER_MARKER
 end
 
-def computer_picks(brd)
-  
+def computer_picks!(brd)
+  prompt "Computer picks a square"
+  square = empty_squares(brd).sample
+  brd[square] = COMPUTER_MARKER
+end
+
+def board_full?(brd)
+  empty_squares(brd).empty?
+end
+
+def someone_wins?(brd)
+  false
 end
 
 board = initialize_board
 display_board(board)
 
-player_picks!(board)
-display_board(board)
+loop do
+  player_picks!(board)
+  display_board(board)
+  computer_picks!(board)
+  display_board(board)
+  break if someone_wins?(board) || board_full?(board)
+end
