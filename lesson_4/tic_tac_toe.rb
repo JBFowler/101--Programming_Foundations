@@ -61,6 +61,16 @@ def joinor(array, punct = ', ', conj = 'or')
   # arr.join(punct)
 end
 
+def place_piece!(brd, current_player)
+  return player_picks!(brd) if current_player == PLAYER_MARKER
+  computer_picks!(brd)
+end
+
+def alternate_player(player)
+  return PLAYER_MARKER if player == COMPUTER_MARKER
+  COMPUTER_MARKER
+end
+
 def player_picks!(brd)
   square = ''
   loop do
@@ -78,10 +88,9 @@ end
 
 def immediate_threat(line, board, marker)
   if board.values_at(*line).count(marker) == 2
-    board.select { |k, v| line.include?(k) && v == INITIAL_MARKER}.keys.first
-  else
-    nil
+    return board.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
   end
+  nil
 end
 
 def computer_picks!(brd)
@@ -151,16 +160,15 @@ def first_to_five
   end
 end
 
-prompt "Who would you like to go first? (Player/Computer)"
-
 loop do
   board = initialize_board
 
+  current_player = PLAYER_MARKER
+
   loop do
     display_board(board)
-    player_picks!(board)
-    break if someone_wins?(board) || board_full?(board)
-    computer_picks!(board)
+    place_piece!(board, current_player)
+    current_player = alternate_player(current_player)
     break if someone_wins?(board) || board_full?(board)
   end
 
