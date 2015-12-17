@@ -17,6 +17,8 @@ INITIAL_MARKER = ' '
 PLAYER_MARKER = 'X'
 COMPUTER_MARKER = 'O'
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
+@player_score = 0
+@computer_score = 0
 
 def prompt(msg)
   puts "=> #{msg}"
@@ -99,6 +101,33 @@ def someone_wins?(brd)
   !!detect_winner(brd)
 end
 
+def add_to_score!(brd)
+  if detect_winner(brd) == 'Player'
+    @player_score += 1
+  elsif detect_winner(brd) == 'Computer'
+    @computer_score += 1
+  end
+end
+
+def reset_scores
+  @player_score = 0
+  @computer_score = 0
+end
+
+def first_to_five
+  if @player_score == 5
+    prompt "You scored 5 points and are the winner!"
+    reset_scores
+  elsif @computer_score == 5
+    prompt "The computer scored 5 points and wins!"
+    reset_scores
+  else
+    puts "Scores".center(39, '-')
+    puts "".center(39, '-')
+    puts "Player: #{@player_score}  ||  Computer: #{@computer_score}".center(40, '-')
+  end
+end
+
 loop do
   board = initialize_board
 
@@ -117,6 +146,9 @@ loop do
   else
     prompt "It's a tie!"
   end
+
+  add_to_score!(board)
+  first_to_five
 
   prompt "Play again? (Y/N)"
   answer = gets.chomp
