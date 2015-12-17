@@ -76,8 +76,8 @@ def player_picks!(brd)
   brd[square.to_i] = PLAYER_MARKER
 end
 
-def immediate_threat(line, board)
-  if board.values_at(*line).count(PLAYER_MARKER) == 2
+def immediate_threat(line, board, marker)
+  if board.values_at(*line).count(marker) == 2
     board.select { |k, v| line.include?(k) && v == INITIAL_MARKER}.keys.first
   else
     nil
@@ -87,8 +87,15 @@ end
 def computer_picks!(brd)
   square = nil
   WINNING_LINES.each do |line|
-    square = immediate_threat(line, brd)
+    square = immediate_threat(line, brd, COMPUTER_MARKER)
     break if square
+  end
+
+  if !square
+    WINNING_LINES.each do |line|
+      square = immediate_threat(line, brd, PLAYER_MARKER)
+      break if square
+    end
   end
 
   if !square
@@ -143,6 +150,8 @@ def first_to_five
     puts "Player: #{@player_score}  ||  Computer: #{@computer_score}".center(40, '-')
   end
 end
+
+prompt "Who would you like to go first? (Player/Computer)"
 
 loop do
   board = initialize_board
