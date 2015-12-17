@@ -3,7 +3,7 @@ require 'pry'
 
 VALUES = %w(2 3 4 5 6 7 8 9 10 J Q K A)
 SUITS = %w(D C S H)
-PLAYER = 'player'
+PLAYER = 'you'
 DEALER = 'dealer'
 
 def prompt(msg)
@@ -26,7 +26,7 @@ def calculate_total(cards)
     if value == 'A'
       total += 11
     elsif value.to_i == 0
-      total += 11
+      total += 10
     else
       total += value.to_i
     end
@@ -39,13 +39,17 @@ def calculate_total(cards)
   total
 end
 
-def display_cards(cards, player)
+def initial_cards(cards, player)
   case player
   when PLAYER 
-    prompt("You have #{cards} for a total of #{calculate_total(cards)}.")
+    prompt("#{player.capitalize} have #{cards} for a total of #{calculate_total(cards)}.")
   when DEALER
     prompt("The dealer has #{cards[0]} and a hidden card.")
   end
+end
+
+def display_full_cards(cards, player)
+  prompt("#{player.capitalize} has #{cards} for a total of #{calculate_total(cards)}.")
 end
 
 def player_goes(cards, deck)
@@ -54,7 +58,7 @@ def player_goes(cards, deck)
     answer = gets.chomp.downcase
     if answer.start_with?('h')
       cards << deck.pop
-      display_cards(cards, PLAYER)
+      display_full_cards(cards, PLAYER)
       break if busted?(cards)
     else
       break
@@ -62,12 +66,31 @@ def player_goes(cards, deck)
   end
 end
 
+def dealer_goes(cards, deck)
+  display_full_cards(cards, DEALER)
+  loop do
+    break if dealer_stops?(cards)
+    sleep(1)
+    prompt("The dealer hits...")
+    cards << deck.pop
+    display_full_cards(cards, DEALER)
+  end
+end
+
 def player_wins?(player_c, dealer_c)
   calculate_total(player_c) > calculate_total(dealer_c)
 end
 
+def dealer_wins?(player_c, dealer_c)
+  calculate_total(player_c) < calculate_total(dealer_c)
+end
+
 def busted?(cards)
   calculate_total(cards) > 21
+end
+
+def dealer_stops?(cards)
+  calculate_total(cards) > 16
 end
 
 def who_wins?(player_c, dealer_c)
@@ -75,8 +98,10 @@ def who_wins?(player_c, dealer_c)
     prompt("You beat the dealer!  You win!")
   elsif busted?(dealer_c)
     prompt("The dealer busted, you win!")
-  else
+  elsif dealer_wins?(player_c, dealer_c)
     prompt("The dealer has a higher total while remaining under 21, you lose...")
+  else
+    prompt("It's a tie!")
   end
 end
 
@@ -109,10 +134,17 @@ loop do
 
   sleep(1)
 
-  display_cards(player_cards, PLAYER)
-  display_cards(dealer_cards, DEALER)
+  initial_cards(player_cards, PLAYER)
+
+  sleep(1)
+
+  initial_cards(dealer_cards, DEALER)
+
+  sleep(1)
 
   player_goes(player_cards, deck)
+
+  sleep(1)
 
   if busted?(player_cards)
     prompt("You busted and lose!")
@@ -122,4 +154,16 @@ loop do
       break
     end
   end
+
+  dealer_goes(dealer_cards, deck)
+
+  sleep(1)
+
+  who_wins?(player_cards, dealer_cards)
+
+  sleep(1)
+
+  break unless play_again?
 end
+
+prompt("Thanks for playing!")
