@@ -76,9 +76,25 @@ def player_picks!(brd)
   brd[square.to_i] = PLAYER_MARKER
 end
 
+def immediate_threat(line, board)
+  if board.values_at(*line).count(PLAYER_MARKER) == 2
+    board.select { |k, v| line.include?(k) && v == INITIAL_MARKER}.keys.first
+  else
+    nil
+  end
+end
+
 def computer_picks!(brd)
-  prompt "Computer picks a square"
-  square = empty_squares(brd).sample
+  square = nil
+  WINNING_LINES.each do |line|
+    square = immediate_threat(line, brd)
+    break if square
+  end
+
+  if !square
+    square = empty_squares(brd).sample
+  end
+
   brd[square] = COMPUTER_MARKER
 end
 
