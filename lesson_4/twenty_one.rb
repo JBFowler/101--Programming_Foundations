@@ -32,7 +32,7 @@ def calculate_total(cards)
     end
   end
 
-  values.select { |value| value == 'A' }.count.times do
+  values.count('A').times do
     total -= 10 if total > 21
   end
 
@@ -41,7 +41,7 @@ end
 
 def initial_cards(cards, player)
   case player
-  when PLAYER 
+  when PLAYER
     prompt("#{player.capitalize} have #{cards} for a total of #{calculate_total(cards)}.")
   when DEALER
     prompt("The dealer has #{cards[0]} and a hidden card.")
